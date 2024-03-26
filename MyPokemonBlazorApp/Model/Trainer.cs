@@ -1,4 +1,6 @@
-﻿namespace MyPokemonBlazorApp.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MyPokemonBlazorApp.Model
 {
     public class Trainer
     {
