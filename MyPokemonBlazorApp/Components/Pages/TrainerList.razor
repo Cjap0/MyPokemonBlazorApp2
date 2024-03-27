@@ -5,20 +5,74 @@
 <div class="row g-0">
     <div class="col-md-12">
         <button class="btn btn-primary float-end" @onclick="ShowAddTrainer">
-            Add Pokemon
+            Add Trainer
         </button>
     </div>
 </div>
 
+@if (showForm)
+{
+    <div class="card">
+        <div class="card-body bg-light">
+            <h4 class="card-title">
+                @(model.Id == 0? "Add Trainer" : "Edit Pokemon")
+            </h4>
+            <EditForm OnValidSubmit="Submit" EditContext="editContext">
+                <DataAnnotationsValidator />
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="name" class="form-label">Name</label>
+                        <InputText class="form-control" placeholder="Name" @bind-Value="model.Name" />
+                        <ValidationMessage For="@(() => model.Name)" />
+                    </div>
+                </div
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="name" class="form-label">Name</label>
+                        <InputText class="form-control" placeholder="Name" @bind-Value="model.Name" />
+                        <ValidationMessage For="@(() => model.Name)" />
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
 
 
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Companion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in trainers)
+        {
+            <tr>
+                <td>@trainer.Id</td>
+                <td>@trainer.Name</td>
+                <td>@trainer.Companion</td>
+                <td>
+                    <button class="btn btn-success" @onclick="() => Edit(trainer)">Edit</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" @onclick="() => Delete(trainer)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 
  
 
 
 @code {
-    private List<Trainer>? pokemons;
+    private List<Trainer>? trainers;
     private EditContext editContext;
     private Trainer model;
     private bool showForm;
@@ -57,7 +111,7 @@
     {
         model = new Trainer();
         editContext = new EditContext(model);
-        pokemons = await DbContext.Trainers.ToListAsync();
+        trainers = await DbContext.Trainers.ToListAsync();
     }
 
     private async Task Delete(Trainer trainer)
